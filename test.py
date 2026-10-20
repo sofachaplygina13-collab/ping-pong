@@ -52,7 +52,7 @@ class Racket(GameSprite):
 
 ball=Ball('i.webp',10,325,225,75,50)
 player1=Racket('r.webp',5,10,75,35,350)
-player2=Racket('r.webp',5,680,75,35,350)
+player2=Racket('r.webp',5,650,75,35,350)
 run=True
 while run:
     clock.tick(FPS)
@@ -67,6 +67,13 @@ while run:
     player1.update1()
     player2.reset()
     player2.update()
+
+    if sprite.collide_rect(ball,player1):
+        ball.speed_x*=-1
+        ball.rect.x+=5
+    if sprite.collide_rect(ball,player2):
+        ball.speed_x*=-1
+        ball.rect.x-=5
     
     display.update()
     window.fill((175, 238, 238))
