@@ -20,15 +20,39 @@ class GameSprite(sprite.Sprite):
 class Ball(GameSprite):
     def __init__(self,name,speed,x,y,width,height):
         super().__init__(name,speed,x,y,width,height)
-    def update():
-        self.rect.y+=self.speed
-        self.rect.x+=self.speed
-        if self.rect.y==450:
-            self.rect.y+=self.speed*-1
-        if self.rect.x==650:
-            self.rect.x+=self.speed*-1
+        self.speed_y=self.speed
+        self.speed_x=self.speed
+    def update(self):
+        self.rect.y+=self.speed_y
+        self.rect.x+=self.speed_x
+        if self.rect.y>=450:
+            self.speed_y*=-1
+        if self.rect.x>=650:
+            self.speed_x*=-1
+        if self.rect.y<=0:
+            self.speed_y*=-1
+        if self.rect.x<=0:
+            self.speed_x*=-1
         
+class Racket(GameSprite):
+    def __init__(self,name,speed,x,y,width,height):
+        super().__init__(name,speed,x,y,width,height)
+    def update(self):
+        key_pressed=key.get_pressed()
+        if key_pressed[K_UP] and self.rect.y>0:
+            self.rect.y-=self.speed
+        if key_pressed[K_DOWN] and self.rect.y<200:
+            self.rect.y+=self.speed
+    def update1(self):
+        key_pressed=key.get_pressed()
+        if key_pressed[K_w] and self.rect.y>0:
+            self.rect.y-=self.speed
+        if key_pressed[K_s] and self.rect.y<200:
+            self.rect.y+=self.speed
 
+ball=Ball('i.webp',10,325,225,75,50)
+player1=Racket('r.webp',5,10,75,35,350)
+player2=Racket('r.webp',5,680,75,35,350)
 run=True
 while run:
     clock.tick(FPS)
@@ -36,7 +60,13 @@ while run:
     for e in event.get():
         if e.type==QUIT:
             run=False
-
+            
+    ball.reset()
+    ball.update()    
+    player1.reset()
+    player1.update1()
+    player2.reset()
+    player2.update()
     
     display.update()
     window.fill((175, 238, 238))
