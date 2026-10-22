@@ -50,9 +50,9 @@ class Racket(GameSprite):
         if key_pressed[K_s] and self.rect.y<200:
             self.rect.y+=self.speed
 
-ball=Ball('i.webp',10,325,225,75,50)
-player1=Racket('r.webp',5,10,75,35,350)
-player2=Racket('r.webp',5,650,75,35,350)
+ball=Ball('i.png',10,325,225,75,50)
+player1=Racket('r.png',5,10,75,55,300)
+player2=Racket('r.png',5,650,75,55,300)
 run=True
 while run:
     clock.tick(FPS)
