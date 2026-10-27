@@ -1,4 +1,5 @@
 from pygame import *
+from random import randint
 
 window=display.set_mode((700,500))
 window.fill((175, 238, 238))
@@ -26,10 +27,12 @@ class Ball(GameSprite):
         self.rect.y+=self.speed_y
         self.rect.x+=self.speed_x
         if self.rect.y>=450:
+            self.speed_y=randint(5,10)
             self.speed_y*=-1
         if self.rect.x>=650:
             self.speed_x*=-1
         if self.rect.y<=0:
+            self.speed_y=-(randint(5,10))
             self.speed_y*=-1
         if self.rect.x<=0:
             self.speed_x*=-1
@@ -62,6 +65,8 @@ font=font.Font(None,100)
 l=0
 r=0
 count=font.render(str(l)+':'+str(r),True,(250,1,4))
+win1=font.render('Победа игрок1',True,(250,100,4))
+win2=font.render('Победа игрок2',True,(250,100,4))
 
 number=0
 finish=1
@@ -81,14 +86,21 @@ while run:
     player2.reset()
     player1.update1()
     player2.update()  
+    if l>=10:
+        window.blit(win1,(100,220))
+    if r>=10:
+        window.blit(win2,(100,220))
 
     if finish==0:  
         ball.update()  
 
         if sprite.collide_rect(ball,player1):
+            ball.speed_x=-(randint(5,10))
             ball.speed_x*=-1
         if sprite.collide_rect(ball,player2):
+            ball.speed_x=randint(5,10)
             ball.speed_x*=-1
+
         if ball.rect.x>=650:
             ball.restart()
             l+=1
@@ -99,6 +111,7 @@ while run:
             r+=1
             count=font.render(str(l)+':'+str(r),True,(250,1,4))
             finish=1
+
         if l>=10:
             finish=2
         if r>=10:
