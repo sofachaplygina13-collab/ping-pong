@@ -2,7 +2,7 @@ from pygame import *
 from random import randint
 
 window=display.set_mode((700,500))
-window.fill((175, 238, 238))
+table=transform.scale(image.load('t.jpg'),(700,500))
 
 clock=time.Clock()
 FPS=60
@@ -57,16 +57,25 @@ class Racket(GameSprite):
             self.rect.y+=self.speed
 
 ball=Ball('i.png',7,325,225,75,50)
-player1=Racket('r.png',5,10,75,55,200)
-player2=Racket('r.png',5,650,75,55,200)
+player1=Racket('r1.png',5,10,145,55,200)
+player2=Racket('r2.png',5,650,145,55,200)
 
 font.init()
-font=font.Font(None,100)
+font1=font.Font(None,100)
 l=0
 r=0
-count=font.render(str(l)+':'+str(r),True,(250,1,4))
-win1=font.render('Победа игрок1',True,(250,100,4))
-win2=font.render('Победа игрок2',True,(250,100,4))
+red=(250,1,4)
+blue=(1,4,250)
+white=(255,255,255)
+color=white
+color1=white
+count=font1.render(str(l)+':'+str(r),True,color)
+win1=font1.render('Победа игрок1',True,(250,100,4))
+win2=font1.render('Победа игрок2',True,(250,100,4))
+font2=font.Font(None,65)
+l1=0
+r1=0
+count1=font2.render(str(l1)+':'+str(r1),True,color1)
 
 number=0
 finish=1
@@ -79,7 +88,7 @@ while run:
             run=False
 
        
-    window.fill((175, 238, 238))   
+    window.blit(table,(0,0)) 
     window.blit(count,(300,0))
     ball.reset()
     player1.reset()
@@ -90,10 +99,11 @@ while run:
         window.blit(win1,(100,220))
     if r>=10:
         window.blit(win2,(100,220))
+    if l1!=0 or r1!=0:
+        window.blit(count1,(430,0))
 
     if finish==0:  
         ball.update()  
-
         if sprite.collide_rect(ball,player1):
             ball.speed_x=-(randint(5,10))
             ball.speed_x*=-1
@@ -104,18 +114,48 @@ while run:
         if ball.rect.x>=650:
             ball.restart()
             l+=1
-            count=font.render(str(l)+':'+str(r),True,(250,1,4))
+            if l>r:
+                color=red
+            elif l<r:
+                color=blue
+            else:
+                color=white
+            count=font1.render(str(l)+':'+str(r),True,color)
             finish=1
         if ball.rect.x<=0:
             ball.restart()
             r+=1
-            count=font.render(str(l)+':'+str(r),True,(250,1,4))
+            if l>r:
+                color=red
+            elif l<r:
+                color=blue
+            else:
+                color=white
+            count=font1.render(str(l)+':'+str(r),True,color)
             finish=1
 
+
         if l>=10:
+            l1+=1
+            if l1>r1:
+                color1=red
+            elif l1<r1:
+                color1=blue
+            else:
+                color1=white
+            count1=font2.render(str(l1)+':'+str(r1),True,color1)
             finish=2
         if r>=10:
+            r1+=1
+            if l1>r1:
+                color1=red
+            elif l1<r1:
+                color1=blue
+            else:
+                color1=white
+            count1=font2.render(str(l1)+':'+str(r1),True,color1)
             finish=2
+
     else:
         number+=1
         if finish==1 and number==100:
@@ -124,9 +164,8 @@ while run:
         if finish==2 and number==100:
             l=0
             r=0
-            count=font.render(str(l)+':'+str(r),True,(250,1,4))
+            count=font1.render(str(l)+':'+str(r),True,(250,1,4))
             finish=0
             number=0
     
     display.update()
-    
